@@ -1,6 +1,12 @@
 <h2><%= @book.title %></h2>
 <h2><%= @book.description %></h2>
 <h2><%= @book.author %></h2>
+<h2><%= @book.category.name %></h2>
+<%= link_to "back", root_path %>
 
+<% if user_signed_in? %>
+<% if current_user.id == @book.user_id %>
 <%= link_to "edit", edit_book_path(@book) %>
 <%= link_to "delete", book_path(@book), method: :delete, data: {confirm: "Are you sure ??"} %>
+<% end %>
+<% end %>

@@ -1,16 +1,23 @@
 class BooksController < ApplicationController
 	before_action :find_book, only: [:update, :show, :edit, :destroy]
   def index
+    if params[:category].blank?
   	@books = Book.all.order("created_at DESC")
+  else
+    @category_id = Category.find_by_name(params[:category]).id
+    @books = Book.where(category_id: @category_id).order("created_at DESC")
+
+  end
   end
 
   def new
-  	@book = Book.new
+  	@book = current_user.books.build
+    @categories = Category.all.map { |c| [c.name, c.id]}
   end
 
   def create
-  	@book = Book.new(book_params)
-
+  	@book = current_user.books.build(book_params)
+    @book.category_id = params[:category_id]
   	if @book.save
   		redirect_to root_path 
   	else
@@ -22,6 +29,7 @@ class BooksController < ApplicationController
   end
 
   def update
+    @book.category_id = params[:category_id]
   	if @book.update_attributes(book_params)
   		redirect_to book_path(@book)
   	else
@@ -30,6 +38,7 @@ class BooksController < ApplicationController
   end
 
   def edit
+    @categories = Category.all.map { |c| [c.name, c.id]}
   end
 
   def destroy
@@ -44,7 +53,7 @@ class BooksController < ApplicationController
 
   private
   def book_params
-  	params.require(:book).permit(:title, :description, :author)
+  	params.require(:book).permit(:title, :description, :author, :category_id)
   end
 
   def find_book

@@ -1,12 +1,25 @@
-<h2><%= @book.title %></h2>
-<h2><%= @book.description %></h2>
-<h2><%= @book.author %></h2>
-<h2><%= @book.category.name %></h2>
-<%= link_to "back", root_path %>
+<div class="row">
+	<div class="col-md-4">
+		<%= image_tag @book.book_img.url(:book_show), class: "book-show" %>
+	</div>
+	<div class="col-md-8">
+		<h2><%= @book.title %></h2>
+		<h2><%= @book.author %></h2>
+		<!-- <h2>Category: <%= @book.category.name %></h2> -->
+		<h2><%= @book.description %></h2>
+	</div>
+</div>
 
-<% if user_signed_in? %>
-<% if current_user.id == @book.user_id %>
-<%= link_to "edit", edit_book_path(@book) %>
-<%= link_to "delete", book_path(@book), method: :delete, data: {confirm: "Are you sure ??"} %>
-<% end %>
-<% end %>
+<div class="row">
+	<div class="col-md-4">
+	<!-- comments will go here !! -->
+	</div>
+</div>
+	<%= link_to "back", root_path %>
+
+	<% if user_signed_in? %>
+		<% if current_user.id == @book.user_id %>
+			<%= link_to "edit", edit_book_path(@book) %>
+			<%= link_to "delete", book_path(@book), method: :delete, data: {confirm: "Are you sure ??"} %>
+		<% end %>
+	<% end %>

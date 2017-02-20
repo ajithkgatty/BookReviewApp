@@ -3,26 +3,57 @@
 		<%= image_tag @book.book_img.url(:book_show), class: "book-show" %>
 	</div>
 	<div class="col-md-8">
-		<h2><%= @book.title %></h2>
-		<h2><%= @book.author %></h2>
+	<div class="book-info">
+		<h2 class="book-title"><%= @book.title %></h2>
+		<h3 class="book-author"><%= @book.author %></h3>
+		<h4 class="avg-rating"> Average rating <span class="number-of-reviews">(based on <%=@book.reviews.count %> reviews )</span></h4>
+		<div class="avearage-review-rating" data-score =<%= @average_rating %>>
+		</div>
 		<!-- <h2>Category: <%= @book.category.name %></h2> -->
-		<h2><%= @book.description %></h2>
+		<p class="book-desc "><%= @book.description %></p>
+	</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-4">
-	<%= render @book.reviews %>
+	<div class="reviews">
+	<h1>Reviews</h1>
+		<%= render @book.reviews %>
 		<div>
-			<%= link_to "Add Review", new_book_review_path(@book) %>
+			<%= link_to "Add Review", new_book_review_path(@book), class: "btn btn-custom" %>
 		</div>
 	</div>
+	</div>
 </div>
-	<%= link_to "back", root_path %>		
+<div class="links btn-group">
+	<%= link_to "back", root_path, class: "btn btn-custom" %>		
 
 	<% if user_signed_in? %>
 		<% if current_user.id == @book.user_id %>
-			<%= link_to "edit", edit_book_path(@book) %>
-			<%= link_to "delete", book_path(@book), method: :delete, data: {confirm: "Are you sure ??"} %>
+			<%= link_to "edit", edit_book_path(@book),  class: "btn btn-custom" %>
+			
 		<% end %>
 	<% end %>
+</div>
+<script type="text/javascript">
+
+	$(".review-rating").raty({
+		readOnly: true,
+		score: function(){
+			return $(this).attr('data-score');
+		},
+		path: '/assets'
+	});
+</script>
+
+<script type="text/javascript">
+
+	$(".avearage-review-rating").raty({
+		readOnly: true,
+		score: function(){
+			return $(this).attr('data-score');
+		},
+		path: '/assets'
+	});
+</script>

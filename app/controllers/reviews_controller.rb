@@ -2,6 +2,7 @@ class ReviewsController < ApplicationController
 
 	before_action :find_book
 	before_action :find_review, only: [:edit, :update, :destroy] 
+	before_action :authenticate_user!, only: [:edit, :new]
 	def new
 		@review = Review.new
 	end
@@ -34,8 +35,6 @@ class ReviewsController < ApplicationController
 			redirect_to book_path(@book)
 		end
 	end
-
-
 
 	private 
 	def review_params
